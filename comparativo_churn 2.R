@@ -310,8 +310,8 @@ arvore_grid <- rpart(formula = ativo ~ .,
                 method = "class",
                 control = rpart.control(minsplit = 1,
                                         maxdepth = 9,
-                                        minbucket = 5,
-                                        cp = 0.002))
+                                        minbucket = 9,
+                                        cp = 0.0015625))
 
 
 # Valores preditos pela árvore (base de treino)
@@ -374,6 +374,7 @@ recall_teste <- confMatrixTeste$byClass["Sensitivity"]        # Recall
 print(paste("Precisão:", precision_teste))
 print(paste("Recall:", recall_teste))
 
+preditos_grid_treino  <- predict(arvore_grid, treino, type = "prob")
 # Calcular a curva ROC
 valor_auc_treino_arvore_final <- roc(response = as.numeric(treino$ativo),  # Convertendo para binário: "1" -> 1, "0" -> 0
                               predictor = preditos_grid_treino[, "1"])
@@ -396,7 +397,7 @@ plotROC <- ggplot(data = roc_data, aes(x = specificity, y = sensitivity)) +
 print(plotROC)
 # -----------------------------------------------------------------------------------------
 
-# Calcular a curva ROC tete
+# Calcular a curva ROC teste
 valor_auc_teste_arvore_final <- roc(response = as.numeric(teste$ativo),  # Convertendo para binário: "1" -> 1, "0" -> 0
                                      predictor = preditos_grid_teste[, "1"])
 
@@ -771,9 +772,9 @@ recall <- c(
 print(recall)
 
 # Definindo as métricas com valores de exemplo
-precision <- c(0.9488152, 0.8488121, 0.9572271, 0.9403509, 0.9979360, 0.8758782)
-recall <- c(0.9345622, 0.8451613, 0.5981567, 0.5763441, 0.9641077, 0.9012048)
-AUC <- c(0.96, 0.854, 0.781, 0.764, 0.99697, 0.93474)
+precision <- c(0.9341432, 0.8053221 , 0.9313525, 0.9280576, 0.9885787, 0.8501362)
+recall <- c(0.9262039 , 0.8394161, 0.5684803, 0.5649635 , 0.9743590, 0.9109489)
+AUC <- c(0.969, 0.815, 0.758, 0.755, 0.99582, 0.93415)
 
 
 
